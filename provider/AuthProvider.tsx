@@ -1,0 +1,46 @@
+import { Session } from '@supabase/supabase-js';
+import { PropsWithChildren, createContext, useContext, useEffect, useState } from 'react';
+import { ActivityIndicator } from 'react-native';
+
+import { supabase } from "~/lib/supabase";
+
+type AuthContextType = {
+  isAuthenticated: boolean;
+  session?: Session | null;
+  userId?: string;
+};
+
+const AuthContext = createContext<AuthContextType>({
+  isAuthenticated: false,
+});
+
+export default function AuthProvider({ children }: PropsWithChildren) {
+  const [session, setSession] = useState<Session | null>(null);
+  const [isReady, setIsReady] = useState(false);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setIsReady(true);
+    });
+
+    supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+  }, []);
+
+  //console.log("session in the authProvider", !!session?.user);
+
+  if (!isReady) {
+    return <ActivityIndicator />;
+  }
+  //console.log(session?.user.id )
+  return (
+    <AuthContext.Provider
+      value={{ session, isAuthenticated: !!session?.user, userId: session?.user.id }}>
+      {children}
+    </AuthContext.Provider>
+  );
+}
+
+export const useAuth = () => useContext(AuthContext);

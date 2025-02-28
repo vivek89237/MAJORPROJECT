@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "555573088930",
+    "project_id": "login-1e2f0",
+    "storage_bucket": "login-1e2f0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:555573088930:android:2a126c6973057765e67dfb",
+        "android_client_info": {
+          "package_name": "com.yugal_sangavi.AuthOTP"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA1lsWajISqYwsPiCLAmYOX3TRL8-ve9AE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
