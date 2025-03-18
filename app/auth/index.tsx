@@ -1,10 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Toast from 'react-native-toast-message';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert,AppState } from 'react-native';
 import CountryPicker from 'react-native-country-picker-modal';
-// import { createClient } from '@supabase/supabase-js';
-import { useCustomer } from '~/provider/CustomerProvider';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {supabase} from "../../lib/supabase"
 
 AppState.addEventListener('change', (state) => {

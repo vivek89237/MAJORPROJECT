@@ -1,5 +1,4 @@
 import {PropsWithChildren, createContext, useContext, useState, useEffect} from 'react';
-// import { getCustomer } from '~/utils/Firebase';
 import {fetchCustomer} from "~/utils/Supabase";
 import { useAuth } from './AuthProvider';
 
@@ -12,7 +11,6 @@ export default function CustomerProvider ({children} : PropsWithChildren) {
     useEffect(()=>{
       fetchCustomer(userId, setCustomer);
     }, [customer])
-   // console.log("customer", customer );
     return (
     <CustomerContext.Provider value ={{
       setCustomer: setCustomer,

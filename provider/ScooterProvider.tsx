@@ -3,21 +3,14 @@ import * as Location from 'expo-location';
 import { getDirections } from '~/services/directions';
 import getDistance from '@turf/distance';
 import { point } from '@turf/helpers';
-import { Alert } from 'react-native';
-
 
 const ScooterContext = createContext({});
-
-
-
 
 export default function ScooterProvider ({children} : PropsWithChildren) {
     const [direction, setDirection] = useState({});
     const [selectedScooter, setSelectedScooter] = useState({});
     const [isNearby, setIsNearby] = useState(false);
   
-   
-
     useEffect(()=>{
       const fetchDircections = async ()=>{
         let { status } = await Location.requestForegroundPermissionsAsync();
