@@ -1,13 +1,13 @@
 import { Session } from '@supabase/supabase-js';
 import { PropsWithChildren, createContext, useContext, useEffect, useState } from 'react';
 import { ActivityIndicator } from 'react-native';
-
 import { supabase } from "~/lib/supabase";
 
 type AuthContextType = {
   isAuthenticated: boolean;
   session?: Session | null;
   userId?: string;
+  setUserContact?: Number;
 };
 
 const AuthContext = createContext<AuthContextType>({
@@ -29,12 +29,9 @@ export default function AuthProvider({ children }: PropsWithChildren) {
     });
   }, []);
 
-  //console.log("session in the authProvider", !!session?.user);
-
   if (!isReady) {
     return <ActivityIndicator />;
   }
-  //console.log(session?.user.id )
   return (
     <AuthContext.Provider
       value={{ session, isAuthenticated: !!session?.user, userId: session?.user.id }}>

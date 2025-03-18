@@ -6,7 +6,6 @@ import CountryPicker from 'react-native-country-picker-modal';
 import { useCustomer } from '~/provider/CustomerProvider';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {supabase} from "../../lib/supabase"
-// Initialize Supabase client
 
 AppState.addEventListener('change', (state) => {
     if (state === 'active') {
@@ -89,16 +88,23 @@ export default function Auth() {
         //Alert.alert('Error', error.message);
       } else {
         Toast.show({
-          type: 'success', // 'success', 'error', or 'info'
+          type: 'success', 
           text1: 'Logged in successfully!',
           visibilityTime: 3000
         });
-        //Alert.alert('Success', 'Logged in successfully!');
-        //storeData("userId", data?.user?.id);
+        const user = {
+          id:  data?.user?.id,
+          Name: "Name",
+          Address: "Address",
+          ContactNo: phoneNumber,
+          image: null,
+        }
        // console.log('User data:', data?.user?.id);
-       
-        
-      }
+         const { error } = await supabase.from('User').upsert(user,{onConflict:'id', ignoreDuplicates:true});
+         if (error) {
+           console.error('Error inserting customer:', error);
+         }
+       }
     } catch (err) {
       Toast.show({
         type: 'error', // 'success', 'error', or 'info'

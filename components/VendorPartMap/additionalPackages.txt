@@ -1,1 +1,0 @@
-npm i @gorhom/bottom-sheet @expo/vector-icons @react-navigation/native @rnmapbox/maps @turf/helpers 

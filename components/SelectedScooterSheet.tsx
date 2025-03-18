@@ -3,7 +3,7 @@ import { ReduceMotion } from 'react-native-reanimated';
 import { Text, Image, View } from 'react-native';
 import { Button } from './Button';
 import { useEffect, useRef } from 'react';
-import { useScooter } from "~/provider/OrderProvider";
+import { useScooter } from "~/provider/ScooterProvider";
 import MERA_THELA from "~/assets/MERA_THELA.jpeg"
 import { FontAwesome6 } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -18,12 +18,11 @@ export default function SelectedScooterSheet() {
         if (selectedScooter) {
             bottomSheetRef.current?.expand();
         }
-    }, [selectedScooter])
-
-
+    },[selectedScooter])
+   
     return (
         <>
-            {selectedScooter && <BottomSheet
+             <BottomSheet
                 animationConfigs={{ ...ANIMATION_CONFIGS, reduceMotion: ReduceMotion.Never }}
                 ref={bottomSheetRef}
                 index={-1}
@@ -48,7 +47,6 @@ export default function SelectedScooterSheet() {
                                 <Text style={{ color: "white", fontSize: 18, fontWeight: 'bold' }}>{Math.ceil(routeTime / 60)} mins</Text>
                             </View>
                         </View>
-
                     </View>
                     <View style={{ flex: 1, padding: 20 }}>
                         {isNearby ? 
@@ -65,7 +63,7 @@ export default function SelectedScooterSheet() {
                         }
                     </View>
                 </BottomSheetView>
-            </BottomSheet>}
+            </BottomSheet>
         </>
 
     );

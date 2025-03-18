@@ -12,9 +12,10 @@ export default function CustomerProvider ({children} : PropsWithChildren) {
     useEffect(()=>{
       fetchCustomer(userId, setCustomer);
     }, [customer])
-    //console.log("customer", customer.Name );
+   // console.log("customer", customer );
     return (
     <CustomerContext.Provider value ={{
+      setCustomer: setCustomer,
       customerId: customer?.id,
       customerName: customer?.Name, 
       customerContact: customer?.ContactNo, 

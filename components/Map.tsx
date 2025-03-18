@@ -15,6 +15,7 @@ import Icon from 'react-native-vector-icons/Ionicons'; // Import Icon from react
 import { getDatabase, ref, onValue } from "firebase/database";
 import {app} from "../firebaseConfig";
 import {database} from "../firebaseConfig";
+
 Mapbox.setAccessToken(process.env.EXPO_PUBLIC_MAPBOX_KEY || '');
 
 const Map = () => {
@@ -51,19 +52,19 @@ const Map = () => {
   useEffect(() => {
     getVehicleInfo(setVendor);
   }, []);
+ 
 
-  const address = "213B Dhiraj Nagar, Indore, Indore, Madhya Pradesh, India";
+  // const address = "213B Dhiraj Nagar, Indore, Indore, Madhya Pradesh, India";
 
-  useEffect(() => {
-    getCoordinates(address, setCoordinates);
-  }, []);
+  // useEffect(() => {
+  //   getCoordinates(address, setCoordinates);
+  // }, []);
 
 
   //console.log(liveLocation);
 
   return (
     <View style={styles.container}>
-      {/* Map View */}
       {/* styleURL="mapbox://styles/mapbox/dark-v11" */}
       <MapView style={styles.map} >
         <Camera followZoomLevel={10} followUserLocation />
@@ -73,7 +74,6 @@ const Map = () => {
         {directionCoordinate && <LineRoute coordinates={directionCoordinate} />}
       </MapView>
 
-      {/* Floating Search Bar and Filter Icon */}
       <View style={styles.searchContainer}>
         <View style={styles.searchRow}>
           <Searchbar
@@ -82,7 +82,6 @@ const Map = () => {
             value={searchQuery}
             style={styles.searchbar}
           />
-          {/* Filter Icon */}
           <TouchableOpacity onPress={() => navigation.navigate('Search')}>
             <Icon name="filter" size={30} color="#000" style={styles.filterIcon} />
           </TouchableOpacity>

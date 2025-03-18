@@ -12,7 +12,6 @@ import RateOrder from '../../screens/RateOrder';
 import OrderConfirmation from '../../orderConfirmation';
 import MapScreen from '~/components/MapScreen'; 
 import Map from '~/components/Map';
-import VendorMap from '~/components/VendorPartMap/VendorMap';
 import SearchFeature from '~/components/SearchFeature'
 import OrderTracking from '~/components/OrderTracking';
 import ProfileScreen from '~/ProfileLayout/ProfileScreen';
@@ -86,11 +85,6 @@ export default function App() {
             options={{ headerShown: false }}
           />
 
-          <Stack.Screen
-            name="VendorMap"
-            component={VendorMap}
-            options={{ title: 'Vendor Map' }}
-          />
           <Stack.Screen
             name="OrderHistory"
             component={OrderHistory}
