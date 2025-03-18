@@ -7,14 +7,10 @@ import { useScooter } from '../provider/ScooterProvider';
 import LineRoute from './LineRoute';
 import ShowVehicles from './ShowVehicles';
 import { getVehicleInfo } from "../utils/Firebase";
-import { getCoordinates } from "../services/directions";
 import { useNavigation } from '@react-navigation/native'; // Import useNavigation
 import SelectedScooterSheet from './SelectedScooterSheet';
 import CardComponent from "./CardComponent";
 import Icon from 'react-native-vector-icons/Ionicons'; // Import Icon from react-native-vector-icons
-import { getDatabase, ref, onValue } from "firebase/database";
-import {app} from "../firebaseConfig";
-import {database} from "../firebaseConfig";
 
 Mapbox.setAccessToken(process.env.EXPO_PUBLIC_MAPBOX_KEY || '');
 
@@ -52,16 +48,6 @@ const Map = () => {
   useEffect(() => {
     getVehicleInfo(setVendor);
   }, []);
- 
-
-  // const address = "213B Dhiraj Nagar, Indore, Indore, Madhya Pradesh, India";
-
-  // useEffect(() => {
-  //   getCoordinates(address, setCoordinates);
-  // }, []);
-
-
-  //console.log(liveLocation);
 
   return (
     <View style={styles.container}>
