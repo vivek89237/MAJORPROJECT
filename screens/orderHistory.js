@@ -36,10 +36,7 @@ const OrderHistory = ({ navigation }) => {
 
         };
       });
-      
-      // const filteredOrders = fetchedOrders.filter(order => order?.status === 'Delivered' || order?.status === 'Cancelled');
       setOrders(fetchedOrders);
-      console.log(customerContact)
     } catch (error) {
       console.error("Error fetching orders: ", error);
     }
