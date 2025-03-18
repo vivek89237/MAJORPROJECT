@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, FlatList, StyleSheet, ScrollView } from 'react-native';
 import { Card, Avatar, Button } from 'react-native-paper';
-import { getFirestore, collection, getDocs, where } from 'firebase/firestore';
+import { getFirestore, collection, getDocs, where, query } from 'firebase/firestore';
 import { app } from '../firebaseConfig';
 import { useFocusEffect } from '@react-navigation/native';
 import { useCustomer } from '~/provider/CustomerProvider';
@@ -10,10 +10,15 @@ const db = getFirestore(app);
 const OrderHistory = ({ navigation }) => {
   const [orders, setOrders] = useState([]);
   const {customerContact} = useCustomer({});
-  // Fetch orders from Firebase
+
   const fetchOrders = async () => {
     try {
-      const querySnapshot = await getDocs(collection(db, 'orders'), where('customerContact', '==', customerContact) );
+      const ordersQuery = query(
+             collection(db, 'orders'),
+             where('customerContact', '==', customerContact),
+             where('status','in', ['Delivered','Cancelled'])
+         );
+      const querySnapshot = await getDocs(ordersQuery);
       const fetchedOrders = querySnapshot.docs.map((doc) => {
         const data = doc.data();
         return {
@@ -31,10 +36,10 @@ const OrderHistory = ({ navigation }) => {
 
         };
       });
-      //console.log(customerContact)
-      const filteredOrders = fetchedOrders.filter(order => order?.status === 'Delivered' || order?.status === 'Cancelled');
-      setOrders(filteredOrders);
-      // setOrders(fetchedOrders);
+      
+      // const filteredOrders = fetchedOrders.filter(order => order?.status === 'Delivered' || order?.status === 'Cancelled');
+      setOrders(fetchedOrders);
+      console.log(customerContact)
     } catch (error) {
       console.error("Error fetching orders: ", error);
     }

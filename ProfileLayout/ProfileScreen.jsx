@@ -40,7 +40,7 @@ export default function App() {
     <ScrollView style={styles.container}>
       {/* Header Section */}
       <View style={styles.headerSection}>
-        <Avatar.Image size={72} source={{uri:customerImage}||customerLogo} />
+        <Avatar.Image size={72} source={{uri:customerImage} || customerLogo} />
         <View style={styles.profileInfo}>
           <Text style={styles.profileName}>{customerName}</Text>
         </View>

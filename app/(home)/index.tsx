@@ -15,8 +15,6 @@ import Map from '~/components/Map';
 import SearchFeature from '~/components/SearchFeature'
 import OrderTracking from '~/components/OrderTracking';
 import ProfileScreen from '~/ProfileLayout/ProfileScreen';
-//database 
-import { supabase } from '~/lib/supabase';
 // icons
 import Ionicons from 'react-native-vector-icons/Ionicons'; 
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -73,6 +71,7 @@ export default function App() {
           <Stack.Screen name="Detail" component={Detail} options={{ headerShown: false }} />
           <Stack.Screen name="Dashboard" component={Dashboard} options={{ headerShown: false }} />
           <Stack.Screen name="Fetch" component={Fetch} options={{ headerShown: false }} /> */}
+          
           <Stack.Screen
             name="Main"
             component={TabNavigator}
@@ -133,6 +132,8 @@ export default function App() {
             component={OrderTracking}
             options={{ headerShown: false }}
           />
+
+         
         </Stack.Navigator>
         </>
   );

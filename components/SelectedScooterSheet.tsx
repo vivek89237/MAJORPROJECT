@@ -19,6 +19,7 @@ export default function SelectedScooterSheet() {
             bottomSheetRef.current?.expand();
         }
     },[selectedScooter])
+    console.log(selectedScooter)
    
     return (
         <>
