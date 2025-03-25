@@ -26,7 +26,7 @@ const VegetableListVendor = ({ route }) => {
   const navigation=useNavigation();
   const { cart, setCart, additems, setAdditems } = useContext(CartItems);
   const { menuData } = useContext(CartItems);
-  const {ContactNo, name}=route.params;
+  const {ContactNo, name, rating, totalDelivery}=route.params;
   //console.log(name);
 
   // console.log(ContactNo);
@@ -47,7 +47,7 @@ const VegetableListVendor = ({ route }) => {
   useEffect(()=>{
     getPosts(ContactNo,setData);
   }, [])
-  // console.log(data);
+  
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
@@ -122,12 +122,6 @@ const VegetableListVendor = ({ route }) => {
           </View>
           <Pressable style={styles.rightContainer}>
             <Pressable
-              onPress={() =>
-                navigation.navigate("Review", {
-                  aggregate_rating: 4.5,
-                  no_of_Delivery: 300,
-                })
-              }
               style={{
                 marginTop: 20,
                 flexDirection: "row",
@@ -150,7 +144,7 @@ const VegetableListVendor = ({ route }) => {
                   color: "white",
                 }}
               >
-                4.5
+                {rating.toFixed(1)}
               </Text>
               <Ionicons name="star" size={20} color="white" />
             </Pressable>
@@ -167,7 +161,7 @@ const VegetableListVendor = ({ route }) => {
                 borderTopRightRadius: 5,
               }}
             >
-              <Text style={{ color: "white", fontWeight: "bold" }}>300 Orders</Text>
+              <Text style={{ color: "white", fontWeight: "bold" }}>{totalDelivery} Orders</Text>
             </View>
           </Pressable>
         </View>

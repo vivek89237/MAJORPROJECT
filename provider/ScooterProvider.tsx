@@ -26,7 +26,7 @@ export default function ScooterProvider ({children} : PropsWithChildren) {
           [selectedScooter?.longitude, selectedScooter?.latitude]
         );
         setDirection(newDirection);
-        if(newDirection?.routes?.[0]?.distance<2000) {
+        if(newDirection?.routes?.[0]?.distance<20000) {
           setIsNearby(true);
         }
         //console.log(isNearby);

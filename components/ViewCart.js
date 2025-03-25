@@ -29,8 +29,9 @@ const ViewCart = (props) => {
   const [isLoading, setIsLoading] = useState(false);
    // State for delivery address
 
+
   const {customerAddress} = useCustomer();
-  //console.log(customerAddress)
+  
   const [deliveryAddress, setDeliveryAddress] = useState(customerAddress );
   const total = cart
     .map((item) => item.price * item.quantity)
