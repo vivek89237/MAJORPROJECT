@@ -9,21 +9,25 @@ const db = getFirestore(app);
 
 const OrderHistory = ({ navigation }) => {
   const [orders, setOrders] = useState([]);
-  const {customerContact} = useCustomer({});
+  const { customerContact } = useCustomer({});
+  //console.log("no ", customerContact);
+ 
+
 
   const fetchOrders = async () => {
     try {
       const ordersQuery = query(
-             collection(db, 'orders'),
-             where('customerContact', '==', customerContact),
-             where('status','in', ['Delivered','Cancelled'])
-         );
+        collection(db, 'orders'),
+        where('customerContact', '==', customerContact),
+        where('status', 'in', ['Delivered', 'Cancelled'])
+      );
       const querySnapshot = await getDocs(ordersQuery);
       const fetchedOrders = querySnapshot.docs.map((doc) => {
         const data = doc.data();
         return {
           id: doc.id,
           VendorName: data.VendorName,
+          vendorContactNo: data.vendorContactNo,
           date: data.date,
           items: data.cart.map((item) => ({
             name: item.name,
@@ -33,6 +37,8 @@ const OrderHistory = ({ navigation }) => {
           total: data?.total,
           status: data?.status,
           deliveryAddress: data.location,
+          isRated: data.isRated,
+          orderId: data.orderId,
 
         };
       });
@@ -41,6 +47,39 @@ const OrderHistory = ({ navigation }) => {
       console.error("Error fetching orders: ", error);
     }
   };
+
+  const fetchVendor = async (vendorContactNo) => {
+    try {
+      const ordersQuery = query(
+        collection(db, 'vendors'),
+        where('ContactNo', '==', vendorContactNo)
+      );
+  
+      const querySnapshot = await getDocs(ordersQuery);
+      const fetchedVendor = querySnapshot.docs.map((doc) => {
+        const data = doc.data();
+        return {
+          VendorName: data.name,
+          vendorContactNo: data.ContactNo,
+          totalRatings: data.totalRatings,
+          totalDelivery: data.totalDelivery,
+        };
+      });
+  
+      if (fetchedVendor.length > 0) {
+        return fetchedVendor[0]; 
+      } else {
+        console.log("No vendor found.");
+        return null;
+      }
+    } catch (error) {
+      console.error("Error fetching vendor: ", error);
+      return null;
+    }
+  };
+  
+
+
 
   useFocusEffect(
     useCallback(() => {
@@ -72,20 +111,40 @@ const OrderHistory = ({ navigation }) => {
         </View>
       </Card.Content>
       <Card.Actions>
-        <Button
-          mode="outlined"
-          onPress={() => navigation.navigate('RateOrder', { orderData: item })}
-          style={styles.button}
-        >
-          Rate Order
-        </Button>
+        {item.status === 'Delivered' && item.isRated == false && (
+          <Button
+            mode="outlined"
+            onPress={() => navigation.navigate('RateOrder', { orderData: item })}
+            style={styles.button}
+          >
+            Rate Order
+          </Button>
+        )}
         <Button
           mode="contained"
-          onPress={() => console.log(`Reorder ${item.id}`)}
+          onPress={async () => {
+            try {
+              const vendorData = await fetchVendor(item.vendorContactNo); 
+
+              if (vendorData) {
+                navigation.navigate('VegetableListVendor', {
+                  ContactNo: vendorData.vendorContactNo,
+                  name: vendorData.VendorName,
+                  rating: vendorData.totalRatings,
+                  totalDelivery: vendorData.totalDelivery
+                });
+              } else {
+                console.error("Vendor data not found");
+              }
+            } catch (error) {
+              console.error("Error fetching vendor details:", error);
+            }
+          }}
           style={styles.button}
         >
           Reorder
         </Button>
+
       </Card.Actions>
     </Card>
   );

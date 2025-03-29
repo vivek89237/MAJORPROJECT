@@ -1,23 +1,84 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, ScrollView, Image, TouchableOpacity } from 'react-native';
+import React, { useState ,useEffect} from 'react';
+import { View, Text, StyleSheet, TextInput, ScrollView, Image, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
 import { AirbnbRating } from 'react-native-ratings';
 import MERA_THELA from "~/assets/MERA_THELA.jpeg"
+import { app } from '../firebaseConfig';
+
+import { useCustomer } from '~/provider/CustomerProvider';
+import { getFirestore, doc, getDocs, updateDoc, addDoc, setDoc, collection, query, where } from "firebase/firestore";
+const db = getFirestore(app);
 const RateOrder = ({ route, navigation }) => {
   const { orderData } = route.params; 
-
+  const {customerContact} = useCustomer({});
+  const [loading, setLoading] = useState(false);
+  
   const [rating, setRating] = useState({
-    restaurant: 0,
+    vendorRating: 0,
     items: {},
   });
   const [review, setReview] = useState('');
+  
+  // console.log(rating);
+  // console.log(review);
+  //console.log(orderData);
+  
+  const handleSubmit = async () => {
 
-  const handleSubmit = () => {
+    if (rating.vendorRating === 0) {
+      Alert.alert("Please rate the vendor before submitting.");
+      return;
+    }
+    setLoading(true);
 
-    // console.log('Restaurant Rating:', rating.restaurant);
-    // console.log('Item Ratings:', rating.items);
-    // console.log('Review:', review);
+    try {
+      const vendorsQuery = query(
+             collection(db, 'vendors'),
+             where('ContactNo', '==', orderData.vendorContactNo),
+        );
+     const querySnapshot = await getDocs(vendorsQuery);
+     const vendorDoc = querySnapshot.docs[0]; // Get the first document
+     const vendorRef = vendorDoc.ref; // Get the document reference
+     const vendorData = vendorDoc.data();
+     const newVendorRating=((vendorData.averageRating*vendorData.totalRatings)+rating.vendorRating)/(vendorData.totalRatings+1);
+    
+    
+     await updateDoc(vendorRef, {
+      averageRating: newVendorRating,
+      totalRatings: vendorData.totalRatings + 1,
+    });
 
+    await addDoc(collection(db, "vendorRatings"), {
+      vendorContactNo: vendorData.ContactNo, // Replace with authenticated user ID
+      customerContactNo: customerContact, // Replace with authenticated user ID
+      timestamp: new Date().toISOString(),
+      review: review,
+      Rating: rating.vendorRating,
+      ratedItems: Object.entries(rating.items).map(([vegetable, value]) => ({
+        vegetable,
+        rating: value,
+      })),
+    });
+
+
+    const ordersQuery = query(
+      collection(db, 'orders'),
+      where('orderId', '==', orderData.orderId),
+    );
+    const orderQuerySnap = await getDocs(ordersQuery);
+    const orderDoc = orderQuerySnap.docs[0]; 
+    const orderRef = orderDoc.ref; 
+    await updateDoc(orderRef, { isRated: true });
+
+    setLoading(false);
     navigation.goBack();
+    }
+
+    catch (error) {
+      console.error('Error submitting rating:', error);
+      setLoading(false);
+    }
+
+    
   };
 
   return (
@@ -25,7 +86,7 @@ const RateOrder = ({ route, navigation }) => {
       <Text style={styles.title}>Rate Your Order</Text>
 
       <View style={styles.restaurantContainer}>
-        <Image source={MERA_THELA} style={styles.restaurantImage} />
+        <Image source={MERA_THELA} style={styles.vendorImage} />
         <View style={styles.restaurantInfo}>
           <Text style={styles.restaurantName}>{orderData.VendorName}</Text>
           <View style={styles.ratingContainer}>
@@ -33,7 +94,7 @@ const RateOrder = ({ route, navigation }) => {
               count={5}
               defaultRating={0}
               size={20}
-              onFinishRating={(value) => setRating({ ...rating, restaurant: value })}
+              onFinishRating={(value) => setRating({ ...rating, vendorRating: value })}
               showRating={false}
             />
           </View>
@@ -74,9 +135,11 @@ const RateOrder = ({ route, navigation }) => {
         onChangeText={setReview}
       />
 
-      <TouchableOpacity onPress={handleSubmit} style={styles.submitButton}>
-        <Text style={styles.submitButtonText}>Submit</Text>
+
+      <TouchableOpacity onPress={handleSubmit} style={styles.submitButton} disabled={loading}>
+        {loading ? <ActivityIndicator color="#ffffff" /> : <Text style={styles.submitButtonText}>Submit</Text>}
       </TouchableOpacity>
+
     </ScrollView>
   );
 };
@@ -97,7 +160,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 20,
   },
-  restaurantImage: {
+  vendorImage: {
     width: 100,
     height: 100,
     borderRadius: 8,
@@ -152,6 +215,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 8,
     marginBottom: 16,
+    textAlignVertical: 'top',
   },
   submitButton: {
     backgroundColor: '#42E100',

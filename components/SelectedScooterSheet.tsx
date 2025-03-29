@@ -54,7 +54,7 @@ export default function SelectedScooterSheet() {
                         <Button 
                         title='Order Now' 
                         style={{ backgroundColor: "#42E100" }} 
-                        onPress={() => navigation.navigate('VegetableListVendor', { ContactNo: selectedScooter.ContactNo, name: selectedScooter.name})}
+                        onPress={() => navigation.navigate('VegetableListVendor', { ContactNo: selectedScooter.ContactNo, name: selectedScooter.name, rating:selectedScooter.averageRating, totalDelivery:selectedScooter.totalDelivery})}
                         /> 
                         :
                          <Button 
