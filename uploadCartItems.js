@@ -4,7 +4,7 @@ import { firestore } from "./firebaseConfig";
 
 const orderRef = collection(firestore, "orders"); // Create a reference to the orders collection
 
-const uploadCartItems = async (cart, setCart, VendorName, total, navigation, ContactNo, deliveryAddress, customerContact, customerCoordinates) => {
+const uploadCartItems = async (cart, VendorName, total, navigation, ContactNo, deliveryAddress, customerContact, customerCoordinates, selectedDate, isScheduled) => {
    
   try {
         const currentDate = new Date();
@@ -18,9 +18,10 @@ const uploadCartItems = async (cart, setCart, VendorName, total, navigation, Con
         quantity,
       }));
       const uniqueOrderId = `${VendorName}-1-${(new Date()).toISOString()}`;
-
-      await addDoc(orderRef, { cart: filteredCart, VendorName:VendorName, date:formattedDate, location: deliveryAddress, status:"Pending", total:total, orderId: uniqueOrderId, vendorContactNo:ContactNo, customerContact:customerContact, customerCoordinates:[75.905966, 22.743242] ,isRated: false,});
-
+      
+      
+      await addDoc(orderRef, { cart: filteredCart, VendorName:VendorName, date:formattedDate, location: deliveryAddress, status:"Pending", total:total, orderId: uniqueOrderId, vendorContactNo:ContactNo, customerContact:customerContact, customerCoordinates:[75.905966, 22.743242] ,isRated: false, deliveryDate:selectedDate, isScheduled:isScheduled});
+      // console.log("date is ",selectedDate,isScheduled);
     console.log("Cart items uploaded successfully!");
     navigation.navigate('OrderConfirmation');
 

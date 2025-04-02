@@ -51,7 +51,7 @@ const VegetableListVendor = ({ route }) => {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
-      <ScrollView contentContainerStyle={{ paddingBottom: 20, flexGrow: 1 }}>
+      <ScrollView contentContainerStyle={{ paddingBottom: 60, flexGrow: 1 }}>
         <View
           style={{
             marginTop: 5,
