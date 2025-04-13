@@ -18,27 +18,12 @@ let vendorRef = collection(firestore, "vendors");
 let customerRef = collection(firestore, "customers");
 let postRef = collection(firestore, "vendors");
 
-// let postRef = doc(firestore, "users","51usiD0xVo3ba8Nd539w");
-
-// export const uploadVehicleInfo =(object)=>{
-//     addDoc(postRef, object)
-//     .then((res) => {
-//         toast.success('Document has been uploaded.');
-//     })
-//     .catch((err) =>{
-//         toast.error(err);
-//     })
-// }
-
-export const getVehicleInfo = (setAllStatus) =>{
-    onSnapshot(vendorRef, response =>{
+export const getVehicleInfo = (setAllStatus, status) =>{
+    let vendorsQuery = query(vendorRef, where('status','in', status??[true, false]))
+    onSnapshot(vendorsQuery, response =>{
         setAllStatus(response.docs.map((docs)=>{
-            //console.log(docs.data)
             return {...docs.data(), id: docs.id}
         }))
-        // console.log(response.docs.map((docs)=>{
-        //     return {...docs.data(), id: docs.id}
-        // }));
     })
 }
 
@@ -49,9 +34,6 @@ export const getCustomer = (customerContact, setCustomer) =>{
         setCustomer(response.docs.map((docs)=>{
             return {...docs.data(), id: docs.id}
         })[0])
-        // console.log(response.docs.map((docs)=>{
-        //     return {...docs.data(), id: docs.id}
-        // })[0]);
     })
 }
 
@@ -80,18 +62,9 @@ export const updateVehicleInfo =(ContactNo, latitude, longitude)=>{
 export const getPosts = (ContactNo, setData) =>{
     let commentQuery = query(postRef, where('ContactNo', '==', ContactNo));
     
-    
     onSnapshot(commentQuery, response =>{
-
-            let comments = response.docs.map((docs)=>docs.data());
-            // console.log(comments)
-            console.log(comments)
-            setData(comments[0]?.vegetables);
-
-
-        // console.log(response.docs.map((docs)=>{
-        //     return {...docs.data(), id: docs.id}
-        // }));
+        let comments = response.docs.map((docs)=>docs.data());
+        setData(comments[0]?.vegetables);
     })
 }
 
@@ -100,9 +73,7 @@ export const getVendorCoordinates = (ContactNo, setData) =>{
     let vendorQuery = query(vendorRef, where('ContactNo', '==', ContactNo));
     onSnapshot(vendorQuery, response =>{
             let data = response.docs.map((docs)=>docs.data());
-            //console.log(data[0].latitude);
             setData([ data[0].longitude,data[0].latitude]);
-            //setData(coordinates);
     })
 }
 
@@ -120,7 +91,6 @@ export const getComment=(postID, setComments)=>{
         let commentQuery = query(commentsRef, where('postID', '==', postID));
         onSnapshot(commentQuery, (response) =>{   
             let comments = response.docs.map((docs)=>docs.data());
-            // console.log(comments)
             setComments(comments)
         })
     }catch(e){
@@ -139,3 +109,15 @@ export const getOrders=(vendorContactNo, setOrders)=>{
         return e;
     }
 }
+
+// let postRef = doc(firestore, "users","51usiD0xVo3ba8Nd539w");
+
+// export const uploadVehicleInfo =(object)=>{
+//     addDoc(postRef, object)
+//     .then((res) => {
+//         toast.success('Document has been uploaded.');
+//     })
+//     .catch((err) =>{
+//         toast.error(err);
+//     })
+// }
