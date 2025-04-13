@@ -10,7 +10,7 @@ export default function CustomerProvider ({children} : PropsWithChildren) {
     const {userId} = useAuth();
     useEffect(()=>{
       fetchCustomer(userId, setCustomer);
-    }, [userId])
+    }, [userId, customer])
     return (
     <CustomerContext.Provider value ={{
       setCustomer: setCustomer,
