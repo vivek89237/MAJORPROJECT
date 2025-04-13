@@ -2,7 +2,7 @@ import { Stack } from 'expo-router';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import ScooterProvider from '~/provider/ScooterProvider';
 import CustomerProvider from '~/provider/CustomerProvider';
-import { BasketProvider } from "../Context";
+import { BasketProvider } from "../provider/Context";
 import AuthProvider from '~/provider/AuthProvider';
 import { StatusBar } from 'expo-status-bar';
 
