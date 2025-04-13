@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import MERA_THELA from "~/assets/MERA_THELA.jpeg";
 
-const CardComponent = ({ name, id, ContactNo }) => {
+const CardComponent = ({ name, id, ContactNo, status }) => {
     const navigation = useNavigation();
 
     return (
@@ -20,7 +20,7 @@ const CardComponent = ({ name, id, ContactNo }) => {
             {/* Card Actions */}
             <View style={styles.cardActions}>
                 <TouchableOpacity style={styles.availableButton}>
-                    <Text style={styles.availableText}>Available</Text>
+                    <Text style={{ color: status? '#42E100':'red', fontWeight: 'bold',}}>{status?'ONLINE':'OFFLINE'}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.orderButton}

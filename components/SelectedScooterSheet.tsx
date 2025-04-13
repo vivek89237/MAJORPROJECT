@@ -18,9 +18,7 @@ export default function SelectedScooterSheet() {
         if (selectedScooter) {
             bottomSheetRef.current?.expand();
         }
-    },[selectedScooter])
-    //console.log(selectedScooter)
-   
+    },[selectedScooter])  
     return (
         <>
              <BottomSheet
@@ -28,7 +26,7 @@ export default function SelectedScooterSheet() {
                 ref={bottomSheetRef}
                 index={-1}
                 snapPoints={[200]}
-                
+                enablePanDownToClose
                 backgroundStyle={{ backgroundColor: "#414442" }}
             >
                 <BottomSheetView style={{ flex: 1, padding: 15 }}>
@@ -54,7 +52,7 @@ export default function SelectedScooterSheet() {
                         <Button 
                         title='Order Now' 
                         style={{ backgroundColor: "#42E100" }} 
-                        onPress={() => navigation.navigate('VegetableListVendor', { ContactNo: selectedScooter.ContactNo, name: selectedScooter.name, rating:selectedScooter.averageRating, totalDelivery:selectedScooter.totalDelivery})}
+                        onPress={() => navigation.navigate('VegetableListVendor', {id:selectedScooter.id, ContactNo: selectedScooter.ContactNo, name: selectedScooter.name, rating:selectedScooter.averageRating, totalDelivery:selectedScooter.totalDelivery})}
                         /> 
                         :
                          <Button 

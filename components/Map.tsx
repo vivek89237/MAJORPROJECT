@@ -22,8 +22,8 @@ const Map = () => {
   const [filteredData, setFilteredData] = useState([]);
   const [coordinates, setCoordinates] = useState([]);
   
-
-  const points = vendors?.map(scooter => point([scooter.longitude, scooter.latitude], { scooter }));
+  const filteredVendors = vendors.filter((vendor)=>{return vendor?.status === true})
+  const points = filteredVendors?.map(scooter => point([scooter.longitude, scooter.latitude], { scooter }));
   
   const scootersFeatures = featureCollection(points);
 
@@ -46,7 +46,7 @@ const Map = () => {
   };
 
   useEffect(() => {
-    getVehicleInfo(setVendor);
+    getVehicleInfo(setVendor, [true, false]);
   }, []);
 
   return (
@@ -81,7 +81,7 @@ const Map = () => {
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item }) => (
             <View style={{flex:1}}>
-             <CardComponent name={item?.name} id={item?.id} ContactNo={item?.ContactNo} />
+             <CardComponent name={item?.name} id={item?.id} ContactNo={item?.ContactNo} status={item?.status}/>
             </View>
           )}
         />

@@ -26,7 +26,7 @@ const VegetableListVendor = ({ route }) => {
   const navigation=useNavigation();
   const { cart, setCart, additems, setAdditems } = useContext(CartItems);
   const { menuData } = useContext(CartItems);
-  const {ContactNo, name, rating, totalDelivery}=route.params;
+  const {id, ContactNo, name, rating, totalDelivery}=route.params;
   //console.log(name);
 
   // console.log(ContactNo);
@@ -225,7 +225,7 @@ const VegetableListVendor = ({ route }) => {
           ></Text>
         </View>
         {/*  Menu Items */}
-        {data.map((item, index) => (
+        {data?.map((item, index) => (
           <Menu
             cart={cart}
             setCart={setCart}

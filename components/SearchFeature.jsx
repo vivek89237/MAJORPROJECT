@@ -51,7 +51,7 @@ const SearchFeature = () => {
   const [isModalVisible, setIsModalVisible] = useState(false); // Modal visibility state
 
   useEffect(() => {
-    getVehicleInfo(setVendors);
+    getVehicleInfo(setVendors, [true]);
   }, []);
 
   useEffect(() => {
