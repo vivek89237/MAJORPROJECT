@@ -144,7 +144,7 @@ const VegetableListVendor = ({ route }) => {
                   color: "white",
                 }}
               >
-                {rating.toFixed(1)}
+                {rating?.toFixed(1)}
               </Text>
               <Ionicons name="star" size={20} color="white" />
             </Pressable>

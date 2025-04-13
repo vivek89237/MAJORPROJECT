@@ -39,16 +39,16 @@ export default function ProfileScreen() {
     }
   };
 
-  const confirmAddress = async () => {
-      setIsLoading(true); // Show loader when confirming address
+  // const confirmAddress = async () => {
+  //     setIsLoading(true); // Show loader when confirming address
   
-      try {
-        await uploadCartItems(cart, setCart, VendorName, total, navigation, ContactNo, deliveryAddress, customerContact, customerCoordinates);
-        setModal(false);
-      } finally {
-        setIsLoading(false); // Hide loader after upload completes
-      }
-    };
+  //     try {
+  //       await uploadCartItems(cart, setCart, VendorName, total, navigation, ContactNo, deliveryAddress, customerContact, customerCoordinates);
+  //       setModal(false);
+  //     } finally {
+  //       setIsLoading(false); // Hide loader after upload completes
+  //     }
+  //   };
   
     const openMap = () => {
       navigation.navigate("MapScreen", {id: customerId}); // Navigate to map screen
