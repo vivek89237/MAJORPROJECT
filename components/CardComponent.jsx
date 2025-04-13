@@ -2,10 +2,11 @@ import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import MERA_THELA from "~/assets/MERA_THELA.jpeg";
+import { CartItems } from "../provider/Context";
 
 const CardComponent = ({ name, id, ContactNo, status , rating,  totalDelivery}) => {
     const navigation = useNavigation();
-
+    const { cart, setCart } = useContext(CartItems);
     return (
         <View style={styles.card}>
             {/* Card Header */}
@@ -24,7 +25,13 @@ const CardComponent = ({ name, id, ContactNo, status , rating,  totalDelivery}) 
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.orderButton}
-                    onPress={() => navigation.navigate('VegetableListVendor', { ContactNo, name , rating, totalDelivery})}
+                    onPress={() => {
+                        navigation.navigate('VegetableListVendor', { ContactNo, name , rating, totalDelivery})
+                        // setCart([]);
+                       
+                        
+                        }
+                    }
 
                 >
                     <Text style={styles.orderButtonText}>Order Now</Text>

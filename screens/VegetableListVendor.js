@@ -12,11 +12,11 @@ import { Ionicons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Menu from "../components/Menu";
-import { CartItems } from "../Context";
+import { CartItems } from "../provider/Context";
 // import menu from "../data/menuData";
 import { Pressable } from "react-native";
 import ViewCart from "../components/ViewCart";
-
+import { useScooter } from "~/provider/ScooterProvider";
 import { useEffect, useState } from 'react';
 import { getPosts } from '../utils/Firebase';
 import { useNavigation } from '@react-navigation/native';
@@ -25,19 +25,13 @@ const { width } = Dimensions.get("window");
 const VegetableListVendor = ({ route }) => {
   const navigation=useNavigation();
   const { cart, setCart, additems, setAdditems } = useContext(CartItems);
+  // const {routeTime} = useScooter();
   const { menuData } = useContext(CartItems);
   const {id, ContactNo, name, rating, totalDelivery}=route.params;
-  //console.log(name);
-
-  // console.log(ContactNo);
-  // console.log(route.params);
   
-  
-  // const items = menu;
-  //const VendorName = "Ramesh Babu";
   const latitude = 0;
   const longitude = 0;
-
+  //setCart([]);
   const Onpress = () => {
     console.warn("button pressed");
   };
@@ -46,6 +40,7 @@ const VegetableListVendor = ({ route }) => {
   const [data, setData] = useState([]);
   useEffect(()=>{
     getPosts(ContactNo,setData);
+    setCart([]);
   }, [])
   
 
@@ -117,8 +112,8 @@ const VegetableListVendor = ({ route }) => {
         >
           <View>
             <Text style={styles.name}>{name}</Text>
-            <Text style={styles.vehicle}>Ev Vehicle</Text>
-            <Text style={styles.cartNo}>GCV328184</Text>
+            <Text style={styles.vehicle}>Cart</Text>
+            {/* <Text style={styles.cartNo}>GCV328184</Text> */}
           </View>
           <Pressable style={styles.rightContainer}>
             <Pressable
