@@ -14,13 +14,12 @@ import MapScreen from '~/components/MapScreen';
 import Map from '~/components/Map';
 import SearchFeature from '~/components/SearchFeature'
 import OrderTracking from '~/components/OrderTracking';
-import ProfileScreen from '~/ProfileLayout/ProfileScreen';
 // icons
 import Ionicons from 'react-native-vector-icons/Ionicons'; 
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { IconButton } from 'react-native-paper'; 
 //import VendorMap from '~/components/VendorMap';
-
+import ProfileScreen from "~/ProfileLayout/ProfileScreen";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -132,6 +131,12 @@ export default function App() {
             component={OrderTracking}
             options={{ headerShown: false }}
           />
+          <Stack.Screen
+            name="ProfileScreen"
+            component={ProfileScreen}
+            options={{ headerShown: false }}
+          />
+          
 
          
         </Stack.Navigator>

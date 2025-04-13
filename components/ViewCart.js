@@ -140,61 +140,6 @@ const ViewCart = (props) => {
           />
         </ScrollView>
 
-        {/* Address Input Section */}
-        <View style={{ padding: 10 }}>
-          <Text style={{ fontSize: 18, fontWeight: "600", marginBottom: 10 }}>
-            Enter Delivery Address
-          </Text>
-          <TextInput
-            style={{
-              borderColor: "#ccc",
-              borderWidth: 1,
-              padding: 8,
-              borderRadius: 5,
-              marginBottom: 10,
-            }}
-            placeholder="Enter address"
-            value={deliveryAddress}
-            onChangeText={setDeliveryAddress}
-          />
-          <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-            <TouchableOpacity
-              onPress={confirmAddress}
-              style={{
-                backgroundColor: "#42E100",
-                padding: 10,
-                borderRadius: 5,
-                alignItems: "center",
-                flex: 1,
-                marginRight: 5,
-              }}
-            >
-              <Text style={{ color: "white", fontSize: 16 }}>
-                {isLoading ? (
-                  <ActivityIndicator size="small" color="#fff" />
-                ) : (
-                  "Confirm Address"
-                )}
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={openMap} // Open map when pressed
-              style={{
-                backgroundColor: "#34A853",
-                padding: 10,
-                borderRadius: 5,
-                alignItems: "center",
-                flex: 1,
-                marginLeft: 5,
-              }}
-            >
-              <Text style={{ color: "white", fontSize: 16 }}>
-                Open Map
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-
         {/* Grand Total Section */}
         <View
           style={{

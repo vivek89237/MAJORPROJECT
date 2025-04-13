@@ -11,7 +11,6 @@ export default function CustomerProvider ({children} : PropsWithChildren) {
     useEffect(()=>{
       fetchCustomer(userId, setCustomer);
     }, [userId])
-   
     return (
     <CustomerContext.Provider value ={{
       setCustomer: setCustomer,
@@ -20,7 +19,7 @@ export default function CustomerProvider ({children} : PropsWithChildren) {
       customerContact: customer?.ContactNo, 
       customerAddress : customer?.Address,  
       customerImage: customer?.image,
-      customerCoordinates : customer?.coordinates,
+      customerCoordinates : [customer?.latitude, customer?.longitude],
       }}>
         {children}
     </CustomerContext.Provider>

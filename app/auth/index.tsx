@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Toast from 'react-native-toast-message';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert,AppState } from 'react-native';
 import CountryPicker from 'react-native-country-picker-modal';
 import {supabase} from "../../lib/supabase"
+import * as Location from 'expo-location';
 
 AppState.addEventListener('change', (state) => {
     if (state === 'active') {
@@ -13,13 +14,33 @@ AppState.addEventListener('change', (state) => {
   }
 );
 
-
 export default function Auth() {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [otp, setOtp] = useState('');
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [countryCode, setCountryCode] = useState('IN'); // Default to India
   const [callingCode, setCallingCode] = useState('91'); // Default calling code
+  const [initialCoordinates, setInitialCoordinates] = useState({
+    latitude:null,
+    longitude:null
+  });
+  // Fetch the current location when the component mounts
+    useEffect(() => {
+      (async () => {
+        const { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== 'granted') {
+          console.warn('Permission to access location was denied');
+          return;
+        }
+  
+        const location = await Location.getCurrentPositionAsync({});
+        setInitialCoordinates({
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+        });
+      })();
+    }, []);
+  
 
   const sendOtp = async () => {
     if (!phoneNumber) {
@@ -95,6 +116,8 @@ export default function Auth() {
           Address: "Address",
           ContactNo: phoneNumber,
           image: "https://zfcmfksnxyzfgrbhxsts.supabase.co/storage/v1/object/sign/userdummyimage/customerImage.webp?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ1c2VyZHVtbXlpbWFnZS9jdXN0b21lckltYWdlLndlYnAiLCJpYXQiOjE3NDIzMTgxNjYsImV4cCI6MTc3Mzg1NDE2Nn0.KcsjwoUZTWOxcw8M1Kvx-sV4bYMCnoyVvBWgYPUYLzA",
+          latitude:initialCoordinates.latitude,
+          longitude:initialCoordinates.longitude,
         }
        // console.log('User data:', data?.user?.id);
          const { error } = await supabase.from('User').upsert(user,{onConflict:'id', ignoreDuplicates:true});

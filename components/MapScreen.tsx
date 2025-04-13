@@ -1,17 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, TextInput, TouchableOpacity, StyleSheet, Text } from 'react-native';
+import { View, TextInput, TouchableOpacity, StyleSheet, Text, ToastAndroid } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { useNavigation } from '@react-navigation/native';
 import * as Location from 'expo-location';
+import { updateLocation } from '~/utils/Supabase';
 
 const MapScreen = ({route}) => {
   const [query, setQuery] = useState('');
   const [initialCoordinates, setInitialCoordinates] = useState(null);
-  const [markerCoordinates, setMarkerCoordinates] = useState(null); // New state for marker coordinates
+  const [markerCoordinates, setMarkerCoordinates] = useState(null);
   const webviewRef = useRef(null);
   const navigation = useNavigation();
 
-  // Fetch the current location when the component mounts
   useEffect(() => {
     (async () => {
       const { status } = await Location.requestForegroundPermissionsAsync();
@@ -29,7 +29,7 @@ const MapScreen = ({route}) => {
     })();
   }, []);
 
-  // Function to handle location search and send it to the WebView
+
   const handleSearch = () => {
     if (webviewRef.current) {
       webviewRef.current.injectJavaScript(`
@@ -38,9 +38,10 @@ const MapScreen = ({route}) => {
     }
   };
 
-  const handleConfirm = () => {
-    //console.log('Marker Coordinates:', markerCoordinates); // Log the marker coordinates
-    navigation.goBack(); // Pass the address back
+  const handleConfirm = async() => {
+    await updateLocation(route.id, markerCoordinates.latitude, markerCoordinates.longitude, query)
+    ToastAndroid.show('Location Updated!', ToastAndroid.SHORT);
+    navigation.navigate("ProfileScreen");  
   };
 
   return (
@@ -107,7 +108,7 @@ const MapScreen = ({route}) => {
         />
       )}
 
-      {/* Search Input and Button */}
+     
       <View style={styles.searchContainer}>
         <TextInput
           value={query}
@@ -120,7 +121,6 @@ const MapScreen = ({route}) => {
         </TouchableOpacity>
       </View>
 
-      {/* Confirm Button */}
       <TouchableOpacity onPress={handleConfirm} style={styles.confirmButton}>
         <Text style={styles.buttonText}>Confirm Address</Text>
       </TouchableOpacity>
