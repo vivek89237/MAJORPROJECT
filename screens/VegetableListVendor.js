@@ -245,6 +245,7 @@ const VegetableListVendor = ({ route }) => {
         <ViewCart
           VendorName={name}
           ContactNo={ContactNo}
+          id={id}
         />
       </ScrollView>
     </SafeAreaView>

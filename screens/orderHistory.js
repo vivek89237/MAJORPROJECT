@@ -59,6 +59,7 @@ const OrderHistory = ({ navigation }) => {
       const fetchedVendor = querySnapshot.docs.map((doc) => {
         const data = doc.data();
         return {
+          id: data.id,
           VendorName: data.name,
           vendorContactNo: data.ContactNo,
           totalRatings: data.totalRatings,
@@ -128,6 +129,7 @@ const OrderHistory = ({ navigation }) => {
 
               if (vendorData) {
                 navigation.navigate('VegetableListVendor', {
+                  id: vendorData.id,
                   ContactNo: vendorData.vendorContactNo,
                   name: vendorData.VendorName,
                   rating: vendorData.totalRatings,

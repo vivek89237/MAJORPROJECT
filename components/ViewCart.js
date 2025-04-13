@@ -17,7 +17,7 @@ import { useNavigation } from "@react-navigation/native";
 import uploadCartItems from "../uploadCartItems";
 import { useCustomer } from "~/provider/CustomerProvider";
 
-const ViewCart = ({ VendorName, ContactNo }) => {
+const ViewCart = ({ VendorName, ContactNo, id }) => {
   const { setAdditems } = useContext(CartItems);
   const { customerContact, customerCoordinates, customerAddress } = useCustomer();
   const navigation = useNavigation();
@@ -44,6 +44,7 @@ const ViewCart = ({ VendorName, ContactNo }) => {
     
     try {
       await uploadCartItems(
+        id,
         cart, 
         VendorName, 
         total, 
