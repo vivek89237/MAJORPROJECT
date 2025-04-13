@@ -26,7 +26,7 @@ const Menu = ({ menu, cart, setCart }) => {
 
   const updateCart = (quantity) => {
     const finalQuantity = calculateFinalQuantity(quantity);
-  
+
     if (finalQuantity > 0) {
       const itemIndex = cart.findIndex((item) => item.id === menu.id);
       if (itemIndex > -1) {

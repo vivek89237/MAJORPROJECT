@@ -65,7 +65,7 @@ const CurrentOrder = ({ navigation }) => {
           <Text style={styles.sectionTitle}>Order Items:</Text>
           {item.items.map((orderItem, index) => (
             <Text key={index} style={styles.itemText}>
-              {orderItem.quantity}x {orderItem.name}
+              {orderItem.quantity} x Kg {orderItem.name}
             </Text>
           ))}
         </ScrollView>
