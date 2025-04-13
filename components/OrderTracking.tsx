@@ -52,8 +52,10 @@ const OrderTracking = ({route}) => {
   return (
     <View style={styles.container}>
       {/* Map View */}
-      
+
       <MapView style={styles.map} styleURL="mapbox://styles/mapbox/light-v11">
+
+
         <Camera followZoomLevel={15} followUserLocation />
         {/* <LocationPuck puckBearingEnabled puckBearing="heading" pulsing={{ isEnabled: true }} /> */}
 
