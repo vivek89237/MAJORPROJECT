@@ -42,7 +42,7 @@ const MapScreen = () => {
 
   const handleConfirm = async() => {
     //console.log(customerId, markerCoordinates.latitude ?? initialCoordinates.latitude,  markerCoordinates.longitude ?? initialCoordinates.longitude, query)
-    await updateLocation(customerId, markerCoordinates.latitude ?? initialCoordinates.latitude,  markerCoordinates.longitude ?? initialCoordinates.longitude, query)
+    await updateLocation(customerId, markerCoordinates.latitude ?? initialCoordinates.latitude,  markerCoordinates.longitude ?? initialCoordinates.longitude, query===''?currentAddress:query)
     ToastAndroid.show('Location Updated!', ToastAndroid.SHORT);
     navigation.goBack();  
   };

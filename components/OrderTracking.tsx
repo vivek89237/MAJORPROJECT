@@ -41,7 +41,7 @@ const OrderTracking = ({route}) => {
   useEffect(()=>{
     
     const fetchDircections = async ()=>{
-      const newDirection = await getDirections(customerCoordinates, vendorCoordinates);
+      const newDirection = await getDirections([customerCoordinates[1], customerCoordinates[0]], vendorCoordinates);
       setDirection(newDirection);
     };
   
@@ -59,7 +59,7 @@ const OrderTracking = ({route}) => {
 
         <PointAnnotation
           id="marker1"
-          coordinate={customerCoordinates}
+          coordinate={[customerCoordinates[1], customerCoordinates[0]]}
         >
           {/* Customize the marker */}
           <View style={{
