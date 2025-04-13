@@ -51,7 +51,7 @@ export default function ProfileScreen() {
   //   };
   
     const openMap = () => {
-      navigation.navigate("MapScreen", {id: customerId}); // Navigate to map screen
+      navigation.navigate("MapScreen"); // Navigate to map screen
     };
 
   return (

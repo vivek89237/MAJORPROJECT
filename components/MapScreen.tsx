@@ -4,9 +4,11 @@ import { WebView } from 'react-native-webview';
 import { useNavigation } from '@react-navigation/native';
 import * as Location from 'expo-location';
 import { updateLocation } from '~/utils/Supabase';
+import { useCustomer } from '~/provider/CustomerProvider';
 
-const MapScreen = ({route}) => {
+const MapScreen = () => {
   const [query, setQuery] = useState('');
+  const { customerId } = useCustomer()
   const [initialCoordinates, setInitialCoordinates] = useState(null);
   const [markerCoordinates, setMarkerCoordinates] = useState(null);
   const webviewRef = useRef(null);
@@ -39,7 +41,8 @@ const MapScreen = ({route}) => {
   };
 
   const handleConfirm = async() => {
-    await updateLocation(route.id, markerCoordinates.latitude, markerCoordinates.longitude, query)
+    //console.log(customerId, markerCoordinates.latitude ?? initialCoordinates.latitude,  markerCoordinates.longitude ?? initialCoordinates.longitude, query)
+    await updateLocation(customerId, markerCoordinates.latitude ?? initialCoordinates.latitude,  markerCoordinates.longitude ?? initialCoordinates.longitude, query)
     ToastAndroid.show('Location Updated!', ToastAndroid.SHORT);
     navigation.navigate("ProfileScreen");  
   };

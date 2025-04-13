@@ -25,6 +25,7 @@ const CardComponent = ({ name, id, ContactNo, status , rating,  totalDelivery}) 
                 <TouchableOpacity
                     style={styles.orderButton}
                     onPress={() => navigation.navigate('VegetableListVendor', { ContactNo, name , rating, totalDelivery})}
+
                 >
                     <Text style={styles.orderButtonText}>Order Now</Text>
                 </TouchableOpacity>
