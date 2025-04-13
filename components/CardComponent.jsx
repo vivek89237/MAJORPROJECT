@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import MERA_THELA from "~/assets/MERA_THELA.jpeg";
 
-const CardComponent = ({ name, id, ContactNo, status }) => {
+const CardComponent = ({ name, id, ContactNo, status , rating,  totalDelivery}) => {
     const navigation = useNavigation();
 
     return (
@@ -24,7 +24,7 @@ const CardComponent = ({ name, id, ContactNo, status }) => {
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.orderButton}
-                    onPress={() => navigation.navigate('VegetableListVendor', { ContactNo, name })}
+                    onPress={() => navigation.navigate('VegetableListVendor', { ContactNo, name , rating, totalDelivery})}
                 >
                     <Text style={styles.orderButtonText}>Order Now</Text>
                 </TouchableOpacity>

@@ -81,7 +81,9 @@ const Map = () => {
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item }) => (
             <View style={{flex:1}}>
-             <CardComponent name={item?.name} id={item?.id} ContactNo={item?.ContactNo} status={item?.status}/>
+
+             <CardComponent name={item?.name} id={item?.id} ContactNo={item?.ContactNo} status={item?.status} rating ={item?.averageRating} totalDelivery={item?.totalDelivery}/>
+
             </View>
           )}
         />
