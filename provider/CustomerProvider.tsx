@@ -19,7 +19,7 @@ export default function CustomerProvider ({children} : PropsWithChildren) {
       customerContact: customer?.ContactNo, 
       customerAddress : customer?.Address,  
       customerImage: customer?.image,
-      customerCoordinates : [customer?.latitude, customer?.longitude],
+      customerCoordinates : [customer?.longitude, customer?.latitude,],
       }}>
         {children}
     </CustomerContext.Provider>
