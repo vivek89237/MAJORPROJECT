@@ -6,7 +6,7 @@ import { CartItems } from "../provider/Context";
 
 const CardComponent = ({ name, id, ContactNo, status , rating,  totalDelivery}) => {
     const navigation = useNavigation();
-    const { cart, setCart } = useContext(CartItems);
+    //const { cart, setCart } = useContext(CartItems);
     return (
         <View style={styles.card}>
             {/* Card Header */}
