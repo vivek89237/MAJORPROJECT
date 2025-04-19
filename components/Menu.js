@@ -63,7 +63,7 @@ const Menu = ({ menu, cart, setCart }) => {
   };
 
   const removeFromCart = () => {
-    if (additems < 0) return;
+    if (additems <= 0) return;
     const quantity = calculateFinalQuantity(additems - 1);
     setAdditems(additems - 1);
     setInputQuantity((additems - 1).toString());
