@@ -1,9 +1,9 @@
 {
   "expo": {
     "name": "Go Cart",
-    "slug": "my-expo-app",
+    "slug": "Go Cart",
     "version": "1.0.0",
-    "scheme": "my-expo-app",
+    "scheme": "Go Cart",
     "web": {
       "bundler": "metro",
       "output": "static",
