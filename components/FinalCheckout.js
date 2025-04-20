@@ -17,7 +17,7 @@ const FinalCheckout = ({ item }) => {
     >
       {/* Display item quantity and name like "2xPotato" */}
       <Text style={{ fontWeight: "700", color: "black" }}>
-        {quantity}Kg {name}
+        {(quantity<1) ? quantity*1000: quantity} {item.unit} : {name}
       </Text>
 
       {/* Display the price adjusted for the quantity */}
