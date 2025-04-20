@@ -32,6 +32,7 @@ const OrderHistory = ({ navigation }) => {
           items: data.cart.map((item) => ({
             name: item.name,
             quantity: item.quantity,
+            unit: item?.unit,
 
           })),
           total: data?.total,
@@ -100,7 +101,7 @@ const OrderHistory = ({ navigation }) => {
           <Text style={styles.sectionTitle}>Order Items:</Text>
           {item.items.map((orderItem, index) => (
             <Text key={index} style={styles.itemText}>
-              {orderItem.quantity} x Kg {orderItem.name}
+              {(orderItem?.quantity<1) ? orderItem?.quantity*1000: orderItem?.quantity} x {orderItem?.unit || "Kg"} {orderItem?.name}
             </Text>
           ))}
         </ScrollView>

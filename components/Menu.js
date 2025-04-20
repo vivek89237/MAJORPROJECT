@@ -14,8 +14,8 @@ import { useNavigation } from '@react-navigation/native';  // Import useNavigati
 const Menu = ({ menu, cart, setCart }) => {
   const [additems, setAdditems] = useState(0);
   const [inputQuantity, setInputQuantity] = useState("0");
-  const [unit, setUnit] = useState("kg"); // Default is kg
-  const navigation = useNavigation();  // Hook to get navigation instance
+  const [unit, setUnit] = useState(menu.unit === "kg" || menu.unit === "g" ? "kg" : menu.unit);
+  const navigation = useNavigation(); 
 
   // Clear the cart when the back button is pressed
 
@@ -24,50 +24,50 @@ const Menu = ({ menu, cart, setCart }) => {
     return unit === "g" ? quantity / 1000 : quantity;
   };
 
-  const updateCart = (quantity) => {
-    const finalQuantity = calculateFinalQuantity(quantity);
-
+  const updateCart = (quantity, unitParam = unit) => {
+    const finalQuantity = unitParam === "g" ? quantity / 1000 : quantity;
+  
     if (finalQuantity > 0) {
       const itemIndex = cart.findIndex((item) => item.id === menu.id);
       if (itemIndex > -1) {
         const updatedCart = cart.map((item, index) => {
           if (index === itemIndex) {
-            return { ...item, quantity: finalQuantity };
+            return { ...item, quantity: finalQuantity, unit: unitParam };
           }
           return item;
         });
         setCart(updatedCart);
       } else {
-        setCart([...cart, { ...menu, quantity: finalQuantity }]);
+        setCart([...cart, { ...menu, quantity: finalQuantity, unit: unitParam }]);
       }
     } else {
-      // Remove the item if the quantity is 0
       const updatedCart = cart.filter((item) => item.id !== menu.id);
       setCart(updatedCart);
     }
   };
+  
   
 
   const handleQuantityChange = (value) => {
     const qty = parseFloat(value) || 0;
     setAdditems(qty);
     setInputQuantity(value);
-    updateCart(qty); // Update cart immediately
+    updateCart(qty, unit); // Pass unit directly
   };
-
+  
   const addToCart = () => {
-    const quantity = calculateFinalQuantity(additems + 1);
-    setAdditems(additems + 1);
-    setInputQuantity((additems + 1).toString());
-    updateCart(additems + 1);
+    const newQty = additems + 1;
+    setAdditems(newQty);
+    setInputQuantity(newQty.toString());
+    updateCart(newQty, unit);
   };
-
+  
   const removeFromCart = () => {
     if (additems <= 0) return;
-    const quantity = calculateFinalQuantity(additems - 1);
-    setAdditems(additems - 1);
-    setInputQuantity((additems - 1).toString());
-    updateCart(additems - 1);
+    const newQty = additems - 1;
+    setAdditems(newQty);
+    setInputQuantity(newQty.toString());
+    updateCart(newQty, unit);
   };
 
   return (
@@ -100,7 +100,7 @@ const Menu = ({ menu, cart, setCart }) => {
                 fontWeight: "600",
               }}
             >
-              ₹{menu.price} per kg
+              ₹{menu.price} per {menu.unit}
             </Text>
 
             {/* Picker Dropdown for selecting quantity type (kg/g) */}
@@ -113,21 +113,29 @@ const Menu = ({ menu, cart, setCart }) => {
               }}
             >
               <Text style={{ fontSize: 16, marginRight: 7 }}>Select Quantity:</Text>
-              <Picker
-                selectedValue={unit}
-                style={{
-                  height: 50,
-                  width: 100,
-                  color: "black",
-                  backgroundColor: "#e0e0e0",
-                  borderRadius: 5,
-                }}
-                onValueChange={(itemValue) => setUnit(itemValue)}
-              >
-                <Picker.Item label="kg" value="kg" />
-                <Picker.Item label="g" value="g" />
-              </Picker>
+
+              {menu.unit === "kg" || menu.unit === "g" ? (
+                <Picker
+                  selectedValue={unit}
+                  style={{
+                    height: 50,
+                    width: 100,
+                    color: "black",
+                    backgroundColor: "#e0e0e0",
+                    borderRadius: 5,
+                  }}
+                  onValueChange={(itemValue) => setUnit(itemValue)}
+                >
+                  <Picker.Item label="kg" value="kg" />
+                  <Picker.Item label="g" value="g" />
+                </Picker>
+              ) : (
+                <Text style={{ fontSize: 16, backgroundColor: "#e0e0e0", paddingHorizontal: 10, paddingVertical: 5, borderRadius: 5 }}>
+                  {menu.unit}
+                </Text>
+              )}
             </View>
+
           </View>
 
           <Image

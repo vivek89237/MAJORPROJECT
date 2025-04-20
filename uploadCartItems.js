@@ -10,15 +10,16 @@ const uploadCartItems = async (id, cart, VendorName, total, navigation, ContactN
         const currentDate = new Date();
         const formattedDate = currentDate.toLocaleDateString('en-GB').split('/').join('-');
 
-    const filteredCart = cart.map(({ id, name, price, quantity }) => ({
+    const filteredCart = cart.map(({ id, name, price, quantity, unit }) => ({
         id,
         name,
         price,
         quantity,
+        unit,
       }));
       const uniqueOrderId = `${VendorName}-1-${(new Date()).toISOString()}`;
 
-      await addDoc(orderRef, { id, cart: filteredCart, VendorName:VendorName, date:formattedDate, location: deliveryAddress, status:"Pending", total:total, orderId: uniqueOrderId, vendorContactNo:ContactNo, customerContact:customerContact, customerCoordinates:customerCoordinates, isRated: false,});
+      await addDoc(orderRef, { id, cart: filteredCart, VendorName:VendorName, date:formattedDate, location: deliveryAddress, status:"Pending", total:total, orderId: uniqueOrderId, vendorContactNo:ContactNo, customerContact:customerContact, customerCoordinates:customerCoordinates, isRated: false, deliveryDate:selectedDate, isScheduled:isScheduled, });
 
 
     console.log("Cart items uploaded successfully!");
