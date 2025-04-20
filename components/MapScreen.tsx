@@ -1,18 +1,24 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, TextInput, TouchableOpacity, StyleSheet, Text, ToastAndroid } from 'react-native';
+import { View, TextInput, TouchableOpacity, StyleSheet, Text, ToastAndroid, Modal } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { useNavigation } from '@react-navigation/native';
 import * as Location from 'expo-location';
 import { updateLocation } from '~/utils/Supabase';
 import { useCustomer } from '~/provider/CustomerProvider';
+import { ActivityIndicator } from 'react-native';
 
 const MapScreen = () => {
   const [query, setQuery] = useState('');
-  const { customerId } = useCustomer()
+  const { customerId, refreshCustomer } = useCustomer();
   const [initialCoordinates, setInitialCoordinates] = useState(null);
   const [markerCoordinates, setMarkerCoordinates] = useState(null);
   const webviewRef = useRef(null);
   const navigation = useNavigation();
+  const [modalVisible, setModalVisible] = useState(false);
+  const [houseInfo, setHouseInfo] = useState('');
+  const [apartmentInfo, setApartmentInfo] = useState('');
+  const [currentAddress, setCurrentAddress] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -31,7 +37,6 @@ const MapScreen = () => {
     })();
   }, []);
 
-
   const handleSearch = () => {
     if (webviewRef.current) {
       webviewRef.current.injectJavaScript(`
@@ -40,11 +45,28 @@ const MapScreen = () => {
     }
   };
 
-  const handleConfirm = async() => {
-    //console.log(customerId, markerCoordinates.latitude ?? initialCoordinates.latitude,  markerCoordinates.longitude ?? initialCoordinates.longitude, query)
-    await updateLocation(customerId, markerCoordinates.latitude ?? initialCoordinates.latitude,  markerCoordinates.longitude ?? initialCoordinates.longitude, query===''?currentAddress:query)
+  const handleConfirm = () => {
+    setModalVisible(true);
+  };
+
+  const submitFinalAddress = async () => {
+    setIsLoading(true);
+    const finalAddress = `${houseInfo}, ${apartmentInfo}, ${query === '' ? currentAddress : query}`;
+
+    await updateLocation(
+      customerId,
+      markerCoordinates?.latitude ?? initialCoordinates.latitude,
+      markerCoordinates?.longitude ?? initialCoordinates.longitude,
+      finalAddress
+    );
+
+    await refreshCustomer(); 
+
     ToastAndroid.show('Location Updated!', ToastAndroid.SHORT);
-    navigation.goBack();  
+    
+    setIsLoading(false);
+    setModalVisible(false);
+    navigation.goBack();
   };
 
   return (
@@ -86,7 +108,6 @@ const MapScreen = () => {
                   window.ReactNativeWebView.postMessage(JSON.stringify({ lng: lngLat.lng, lat: lngLat.lat }));
                 });
 
-                // Function to search location and set marker
                 async function searchLocation(query) {
                   const response = await fetch(\`https://api.mapbox.com/geocoding/v5/mapbox.places/\${query}.json?access_token=\${mapboxgl.accessToken}\`);
                   const data = await response.json();
@@ -104,14 +125,18 @@ const MapScreen = () => {
           }}
           onMessage={(event) => {
             const locationData = JSON.parse(event.nativeEvent.data);
-            console.log(locationData);
-            setMarkerCoordinates([locationData.lat, locationData.lng]);
+            if (locationData?.address) setCurrentAddress(locationData.address);
+            if (locationData?.lat && locationData?.lng) {
+              setMarkerCoordinates({
+                latitude: locationData.lat,
+                longitude: locationData.lng,
+              });
+            }
           }}
           style={{ flex: 1 }}
         />
       )}
 
-     
       <View style={styles.searchContainer}>
         <TextInput
           value={query}
@@ -127,6 +152,44 @@ const MapScreen = () => {
       <TouchableOpacity onPress={handleConfirm} style={styles.confirmButton}>
         <Text style={styles.buttonText}>Confirm Address</Text>
       </TouchableOpacity>
+
+      {/* Modal */}
+      <Modal visible={modalVisible} transparent animationType="slide">
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContainer}>
+            <Text style={styles.modalTitle}>Enter Address Details</Text>
+
+            <TextInput
+              placeholder="House/Flat/Block No"
+              value={houseInfo}
+              onChangeText={setHouseInfo}
+              style={styles.modalInput}
+            />
+            <TextInput
+              placeholder="Apartment/Area/Colony"
+              value={apartmentInfo}
+              onChangeText={setApartmentInfo}
+              style={styles.modalInput}
+            />
+
+            {isLoading ? (
+              <ActivityIndicator size="large" color="#42E100" />
+            ) : (
+              <View style={styles.modalButtonRow}>
+                <TouchableOpacity onPress={() => setModalVisible(false)} style={[styles.modalButton, { backgroundColor: '#ccc' }]}>
+                  <Text style={[styles.buttonText, { color: '#333' }]}>Cancel</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={submitFinalAddress} style={styles.modalButton}>
+                  <Text style={styles.buttonText}>Submit</Text>
+                </TouchableOpacity>
+
+              </View>
+            )}
+
+          </View>
+        </View>
+      </Modal>
+
     </View>
   );
 };
@@ -170,6 +233,43 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 16,
   },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContainer: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+    width: '90%',
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 15,
+    textAlign: 'center',
+  },
+  modalInput: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 10,
+  },
+  modalButton: {
+    backgroundColor: '#42E100',
+    padding: 12,
+    borderRadius: 5,
+    alignItems: 'center',
+  },
+  modalButtonRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    gap: 10,
+  },
+  
 });
 
 export default MapScreen;
