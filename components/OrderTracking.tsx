@@ -13,27 +13,11 @@ import OrderTrackingSheet from "../components/OrderTrackingSheet"
 
 Mapbox.setAccessToken(process.env.EXPO_PUBLIC_MAPBOX_KEY || '');
 
-const OrderTracking = ({route}) => {
+const OrderTracking = ({route}: {route:any}) => {
  
-  const {vendorContactNo, vendorName, customerCoordinates} = route.params;  // get customer data from navigation params
+  const {vendorContactNo, vendorName, customerCoordinates} = route.params;  
   const [direction, setDirection] = useState({});
-  const [vendorCoordinates, setVendorCoordinates] = useState([0,0]);
-  // getVendorCoordinates(vendorContactNo, setVendorCoordinates);
-  // console.log("hello");
-  useEffect(() => {
-    // Function to run every five minutes
-    const fetchData = () => {
-      getVendorCoordinates(vendorContactNo, setVendorCoordinates);
-    };
-
-    // Call fetchData immediately on mount
-    fetchData();
-
-    // Set up an interval to run fetchData every five minutes
-    const intervalId = setInterval(fetchData, 5*60*1000 ); // 5 minutes in milliseconds
-    // Cleanup interval on component unmount
-    return () => clearInterval(intervalId);
-  }, []);
+  const [vendorCoordinates, setVendorCoordinates] = useState({});
 
   useEffect(()=>{
     getVendorCoordinates(vendorContactNo, setVendorCoordinates);
@@ -41,7 +25,7 @@ const OrderTracking = ({route}) => {
   useEffect(()=>{
     
     const fetchDircections = async ()=>{
-      const newDirection = await getDirections([customerCoordinates[1], customerCoordinates[0]], vendorCoordinates);
+      const newDirection = await getDirections([customerCoordinates[1], customerCoordinates[0]], vendorCoordinates?.coordinates, vendorCoordinates?.type);
       setDirection(newDirection);
     };
   

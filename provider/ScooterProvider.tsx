@@ -23,7 +23,8 @@ export default function ScooterProvider ({children} : PropsWithChildren) {
 
         const newDirection = await getDirections(
           [myLocation.coords.longitude, myLocation.coords.latitude],
-          [selectedScooter?.longitude, selectedScooter?.latitude]
+          [selectedScooter?.longitude, selectedScooter?.latitude], 
+          selectedScooter?.type
         );
         setDirection(newDirection);
         if(newDirection?.routes?.[0]?.distance<20000) {
