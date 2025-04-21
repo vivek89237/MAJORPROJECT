@@ -73,7 +73,7 @@ export const getVendorCoordinates = (ContactNo, setData) =>{
     let vendorQuery = query(vendorRef, where('ContactNo', '==', ContactNo));
     onSnapshot(vendorQuery, response =>{
             let data = response.docs.map((docs)=>docs.data());
-            setData([ data[0].longitude,data[0].latitude]);
+            setData({coordinates:[ data[0].longitude,data[0].latitude], type: data[0]?.type});
     })
 }
 
