@@ -5,6 +5,7 @@ import { Card, Avatar, Button } from 'react-native-paper';
 import { getFirestore, collection, getDocs, query, where } from 'firebase/firestore';
 import { app } from '../firebaseConfig';
 import { useCustomer } from '~/provider/CustomerProvider';
+import Table from '~/components/Table';
 
 const db = getFirestore(app);
 
@@ -22,21 +23,8 @@ const CurrentOrder = ({ navigation }) => {
       const querySnapshot = await getDocs(ordersQuery);
       const fetchedOrders = querySnapshot.docs.map((doc) => {
         const data = doc.data();
-        return {
-          id: doc.id,
-          VendorName: data.VendorName,
-          vendorContactNo: data.vendorContactNo,
-          date: data.date,
-          items: data.cart.map((item) => ({
-            name: item.name,
-            quantity: item.quantity,
-            unit: item.unit,
-          })),
-          customerCoordinates: data.customerCoordinates,
-          total: data?.total,
-          status: data?.status,
-          deliveryAddress: data.location,
-        };
+        console.log(data)
+         return {...data, oid: doc}
       });
 
       setOrders(fetchedOrders);
@@ -53,25 +41,27 @@ const CurrentOrder = ({ navigation }) => {
 
   // Filter orders based on the selected tab
   const filteredOrders = orders.filter((order) => order.status === selectedTab);
-
   const renderItem = ({ item }) => (
+    console.log("item", item),
     <Card style={styles.card}>
       <Card.Title
-        title={item.VendorName}
-        subtitle={`Date: ${item.date}`}
+        title={item?.VendorName}
+        subtitle={`Date: ${item?.date}`}
         left={(props) => <Avatar.Icon {...props} icon="store" />}
       />
       <Card.Content>
         <ScrollView  style={styles.itemsContainer}>
-          <Text style={styles.sectionTitle}>Order Items:</Text>
-          {item.items.map((orderItem, index) => (
+          {/* <Text style={styles.sectionTitle}>Order Items:</Text> */}
+          {/* {item.items.map((orderItem, index) => (
             <Text key={index} style={styles.itemText}>
               {(orderItem?.quantity<1) ? orderItem?.quantity*1000: orderItem?.quantity} x {orderItem?.unit || "Kg"} {orderItem?.name}
             </Text>
-          ))}
+          ))} */}
+          
+          <Table data={item?.cart} price={item?.total} />
         </ScrollView>
         <View style={styles.detailsContainer}>
-          <Text style={styles.detailText}>Total: ₹ {item.total}</Text>
+          {/* <Text style={styles.detailText}>Total: ₹ {item.total}</Text> */}
           <Text
             style={[
               styles.detailText,
@@ -81,7 +71,7 @@ const CurrentOrder = ({ navigation }) => {
             Status: {item.status}
           </Text>
           <Text style={styles.detailText}>
-            Delivery Address: {item.deliveryAddress}
+            Delivery Address: {item?.location}
           </Text>
         </View>
       </Card.Content>
@@ -189,7 +179,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   itemsContainer: {
-    maxHeight: 150,
+    maxHeight: 200,
     marginBottom: 8,
     backgroundColor: '#f9f9f9',
     padding: 8,
@@ -210,8 +200,8 @@ const styles = StyleSheet.create({
   detailsContainer: {
     marginTop: 8,
     paddingVertical: 8,
-    borderTopWidth: 1,
-    borderTopColor: '#ddd',
+    // borderTopWidth: 1,
+    // borderTopColor: '#ddd',
   },
   detailText: {
     fontSize: 16,

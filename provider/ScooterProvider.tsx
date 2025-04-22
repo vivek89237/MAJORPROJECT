@@ -30,7 +30,7 @@ export function vehicleType(type:any){
 }
 
 export default function ScooterProvider ({children} : PropsWithChildren) {
-    const [direction, setDirection] = useState({});
+    const [direction, setDirection] = useState(null);
     const [selectedScooter, setSelectedScooter] = useState(null);
     const [isNearby, setIsNearby] = useState(false);
   
@@ -88,7 +88,8 @@ export default function ScooterProvider ({children} : PropsWithChildren) {
     <ScooterContext.Provider value ={{
       selectedScooter, 
       setSelectedScooter, 
-      direction, 
+      direction,
+      setDirection, 
       directionCoordinate: direction?.routes?.[0]?.geometry?.coordinates,
       routeTime: direction?.routes?.[0]?.duration,
       routeDistance: direction?.routes?.[0]?.distance,

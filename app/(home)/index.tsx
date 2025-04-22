@@ -18,7 +18,6 @@ import OrderTracking from '~/components/OrderTracking';
 import Ionicons from 'react-native-vector-icons/Ionicons'; 
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { IconButton } from 'react-native-paper'; 
-//import VendorMap from '~/components/VendorMap';
 import ProfileScreen from "~/ProfileLayout/ProfileScreen";
 
 const Stack = createStackNavigator();
@@ -137,8 +136,6 @@ export default function App() {
             options={{ headerShown: false }}
           />
           
-
-         
         </Stack.Navigator>
         </>
   );
