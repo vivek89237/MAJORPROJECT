@@ -54,7 +54,7 @@ const OrderTracking = ({route}: {route:any}) => {
   
     fetchDircections();
     
-  },[vendorCoordinates])
+  },[])
  
   return (
     <View style={styles.container}>

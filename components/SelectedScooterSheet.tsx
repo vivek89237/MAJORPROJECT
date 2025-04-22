@@ -2,7 +2,7 @@ import BottomSheet, { BottomSheetView, ANIMATION_CONFIGS } from '@gorhom/bottom-
 import { ReduceMotion } from 'react-native-reanimated';
 import { Text, Image, View } from 'react-native';
 import { Button } from './Button';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 import { useScooter } from "~/provider/ScooterProvider";
 import MERA_THELA from "~/assets/MERA_THELA.jpeg"
 import { FontAwesome6 } from '@expo/vector-icons';
@@ -10,7 +10,7 @@ import { useNavigation } from '@react-navigation/native';
 
 export default function SelectedScooterSheet() {
     const navigation = useNavigation();
-    const { selectedScooter, isNearby, routeTime, routeDistance , setIsNearby} = useScooter();
+    const { selectedScooter, isNearby, routeTime, routeDistance , setSelectedScooter, setIsNearby} = useScooter();
 
     const bottomSheetRef = useRef<BottomSheet>(null);
 
@@ -19,6 +19,12 @@ export default function SelectedScooterSheet() {
             bottomSheetRef.current?.expand();
         }
     },[selectedScooter])  
+    const handleSheetChange = useCallback((index) => {
+        if (index === -1) {
+            setSelectedScooter(null);
+        }
+      }, []);
+   
     return (
         <>
              <BottomSheet
@@ -27,6 +33,7 @@ export default function SelectedScooterSheet() {
                 index={-1}
                 snapPoints={[200]}
                 enablePanDownToClose
+                onChange={handleSheetChange}
                 backgroundStyle={{ backgroundColor: "#414442" }}
             >
                 <BottomSheetView style={{ flex: 1, padding: 15 }}>

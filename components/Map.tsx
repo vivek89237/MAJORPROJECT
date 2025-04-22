@@ -16,7 +16,7 @@ Mapbox.setAccessToken(process.env.EXPO_PUBLIC_MAPBOX_KEY || '');
 
 const Map = () => {
   const navigation = useNavigation(); // Initialize navigation object
-  const { setSelectedScooter, directionCoordinate } = useScooter();
+  const { setSelectedScooter, directionCoordinate, selectedScooter } = useScooter();
   const [vendors, setVendor] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredData, setFilteredData] = useState([]);
@@ -57,7 +57,7 @@ const Map = () => {
         <LocationPuck puckBearingEnabled puckBearing="heading" pulsing={{ isEnabled: true }} />
 
         <ShowVehicles onPointPress={onPointPress} scootersFeatures={scootersFeatures} />
-        {directionCoordinate && <LineRoute coordinates={directionCoordinate} />}
+        {directionCoordinate && selectedScooter && <LineRoute coordinates={directionCoordinate} />}
       </MapView>
 
       <View style={styles.searchContainer}>

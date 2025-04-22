@@ -6,6 +6,7 @@ import { getVehicleInfo } from '~/utils/Firebase';
 import MERA_THELA from '../assets/MERA_THELA.jpeg';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
+import { vehicleType } from './OrderTracking';
 
 async function findDistance(vendors, setNewVendors) {
   let { status } = await Location.requestForegroundPermissionsAsync();
@@ -20,7 +21,8 @@ async function findDistance(vendors, setNewVendors) {
   for (let vendor of vendors) {
     let newdirection = await getDirections(
       [myLocation.coords.longitude, myLocation.coords.latitude],
-      [vendor.longitude, vendor.latitude]
+      [vendor?.longitude, vendor?.latitude],
+      vehicleType(vendor?.type)
     );
     let dis = newdirection?.routes?.[0]?.distance;
     let dur = newdirection?.routes?.[0]?.duration;
@@ -66,7 +68,7 @@ const SearchFeature = () => {
     } else {
       const filtered = newVendors
         .map((vendor) => {
-          const vegetable = vendor.vegetables.find((veg) =>
+          const vegetable = vendor?.vegetables?.find((veg) =>
             veg.name.toLowerCase().includes(searchText.toLowerCase())
           );
           if (vegetable) {
