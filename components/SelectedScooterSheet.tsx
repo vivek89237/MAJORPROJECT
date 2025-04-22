@@ -33,8 +33,8 @@ export default function SelectedScooterSheet() {
                     <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
                         <Image source={MERA_THELA} style={{ width: 60, height: 60 }} />
                         <View style={{ flex: 1, gap: 5 }}>
-                            <Text style={{ color: "white", fontSize: 20, fontWeight: '600' }} >{selectedScooter.name}</Text>
-                            <Text style={{ color: "gray", fontSize: 15 }} >{selectedScooter.id}</Text>
+                            <Text style={{ color: "white", fontSize: 20, fontWeight: '600' }} >{selectedScooter?.name}</Text>
+                            <Text style={{ color: "gray", fontSize: 15 }} >{selectedScooter?.id}</Text>
                         </View>
                         <View style={{ gap: 8 }}>
                             <View style={{ flexDirection: "row", alignItems: "center", gap: 5, alignSelf: 'flex-start' }}>
@@ -52,7 +52,7 @@ export default function SelectedScooterSheet() {
                         <Button 
                         title='Order Now' 
                         style={{ backgroundColor: "#42E100" }} 
-                        onPress={() => navigation.navigate('VegetableListVendor', {id:selectedScooter.id, ContactNo: selectedScooter.ContactNo, name: selectedScooter.name, rating:selectedScooter.averageRating, totalDelivery:selectedScooter.totalDelivery})}
+                        onPress={() => navigation.navigate('VegetableListVendor', {id:selectedScooter?.id, ContactNo: selectedScooter?.ContactNo, name: selectedScooter?.name, rating:selectedScooter?.averageRating, totalDelivery:selectedScooter?.totalDelivery})}
                         /> 
                         :
                          <Button 

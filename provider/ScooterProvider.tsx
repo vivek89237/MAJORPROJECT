@@ -31,7 +31,7 @@ export function vehicleType(type:any){
 
 export default function ScooterProvider ({children} : PropsWithChildren) {
     const [direction, setDirection] = useState({});
-    const [selectedScooter, setSelectedScooter] = useState({});
+    const [selectedScooter, setSelectedScooter] = useState(null);
     const [isNearby, setIsNearby] = useState(false);
   
     useEffect(()=>{
