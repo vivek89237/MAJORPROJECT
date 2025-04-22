@@ -13,6 +13,29 @@ import OrderTrackingSheet from "../components/OrderTrackingSheet"
 
 Mapbox.setAccessToken(process.env.EXPO_PUBLIC_MAPBOX_KEY || '');
 
+
+export enum VehicleType{
+  HANDCART='HANDCART',
+  VEHICLE='VEHICLE'
+}
+
+export enum Way{
+  WALKING='walking',
+  DRIVING='driving'
+}
+
+export function vehicleType(type:any){
+  switch (type){
+    case VehicleType.HANDCART:
+      return Way.WALKING
+    case VehicleType.VEHICLE:
+      return Way.DRIVING
+    default :
+      return Way.WALKING
+  }
+    
+}
+
 const OrderTracking = ({route}: {route:any}) => {
  
   const {vendorContactNo, vendorName, customerCoordinates} = route.params;  
@@ -25,7 +48,7 @@ const OrderTracking = ({route}: {route:any}) => {
   useEffect(()=>{
     
     const fetchDircections = async ()=>{
-      const newDirection = await getDirections([customerCoordinates[1], customerCoordinates[0]], vendorCoordinates?.coordinates, vendorCoordinates?.type);
+      const newDirection = await getDirections([customerCoordinates[1], customerCoordinates[0]], vendorCoordinates?.coordinates, vehicleType(vendorCoordinates?.type));
       setDirection(newDirection);
     };
   

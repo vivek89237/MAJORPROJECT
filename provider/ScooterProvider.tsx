@@ -6,6 +6,29 @@ import { point } from '@turf/helpers';
 
 const ScooterContext = createContext({});
 
+
+export enum VehicleType{
+  HANDCART='HANDCART',
+  VEHICLE='VEHICLE'
+}
+
+export enum Way{
+  WALKING='walking',
+  DRIVING='driving'
+}
+
+export function vehicleType(type:any){
+  switch (type){
+    case VehicleType.HANDCART:
+      return Way.WALKING
+    case VehicleType.VEHICLE:
+      return Way.DRIVING
+    default :
+      return Way.WALKING
+  }
+    
+}
+
 export default function ScooterProvider ({children} : PropsWithChildren) {
     const [direction, setDirection] = useState({});
     const [selectedScooter, setSelectedScooter] = useState({});
@@ -24,13 +47,12 @@ export default function ScooterProvider ({children} : PropsWithChildren) {
         const newDirection = await getDirections(
           [myLocation.coords.longitude, myLocation.coords.latitude],
           [selectedScooter?.longitude, selectedScooter?.latitude], 
-          selectedScooter?.type
+          vehicleType(selectedScooter?.type)
         );
         setDirection(newDirection);
         if(newDirection?.routes?.[0]?.distance<20000) {
           setIsNearby(true);
         }
-        //console.log(isNearby);
       };
 
       if(selectedScooter) {
