@@ -42,7 +42,6 @@ const CurrentOrder = ({ navigation }) => {
   // Filter orders based on the selected tab
   const filteredOrders = orders.filter((order) => order.status === selectedTab);
   const renderItem = ({ item }) => (
-    console.log("item", item),
     <Card style={styles.card}>
       <Card.Title
         title={item?.VendorName}
