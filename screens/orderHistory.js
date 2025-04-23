@@ -5,13 +5,13 @@ import { getFirestore, collection, getDocs, where, query } from 'firebase/firest
 import { app } from '../firebaseConfig';
 import { useFocusEffect } from '@react-navigation/native';
 import { useCustomer } from '~/provider/CustomerProvider';
-import Table from '~/components/Table';
-
 const db = getFirestore(app);
 
 const OrderHistory = ({ navigation }) => {
   const [orders, setOrders] = useState([]);
   const { customerContact } = useCustomer({});
+  //console.log("no ", customerContact);
+
 
   const fetchOrders = async () => {
     try {
@@ -23,7 +23,24 @@ const OrderHistory = ({ navigation }) => {
       const querySnapshot = await getDocs(ordersQuery);
       const fetchedOrders = querySnapshot.docs.map((doc) => {
         const data = doc.data();
-        return {...data, oid: doc}
+        return {
+          id: doc.id,
+          VendorName: data.VendorName,
+          vendorContactNo: data.vendorContactNo,
+          date: data.date,
+          items: data.cart.map((item) => ({
+            name: item.name,
+            quantity: item.quantity,
+            unit: item?.unit,
+
+          })),
+          total: data?.total,
+          status: data?.status,
+          deliveryAddress: data.location,
+          isRated: data.isRated,
+          orderId: data.orderId,
+
+        };
       });
       setOrders(fetchedOrders);
     } catch (error) {
@@ -31,11 +48,11 @@ const OrderHistory = ({ navigation }) => {
     }
   };
 
-  const fetchVendor = async (id) => {
+  const fetchVendor = async (vendorContactNo) => {
     try {
       const ordersQuery = query(
         collection(db, 'vendors'),
-        where('id', '==', id)
+        where('ContactNo', '==', vendorContactNo)
       );
   
       const querySnapshot = await getDocs(ordersQuery);
@@ -62,6 +79,9 @@ const OrderHistory = ({ navigation }) => {
     }
   };
   
+
+
+
   useFocusEffect(
     useCallback(() => {
       fetchOrders();
@@ -77,19 +97,18 @@ const OrderHistory = ({ navigation }) => {
       />
       <Card.Content>
         <ScrollView style={styles.itemsContainer}>
-          {/* <Text style={styles.sectionTitle}>Order Items:</Text> */}
-          {/* {item.items.map((orderItem, index) => (
+          <Text style={styles.sectionTitle}>Order Items:</Text>
+          {item.items.map((orderItem, index) => (
             <Text key={index} style={styles.itemText}>
               {(orderItem?.quantity<1) ? orderItem?.quantity*1000: orderItem?.quantity} x {orderItem?.unit || "Kg"} {orderItem?.name}
             </Text>
-          ))} */}
-          <Table data={item?.cart} price={item?.total} />
+          ))}
         </ScrollView>
         <View style={styles.detailsContainer}>
-          {/* <Text style={styles.detailText}>Total: {item.total}</Text> */}
+          <Text style={styles.detailText}>Total: {item.total}</Text>
           <Text style={[styles.detailText, { color: item.status === "Delivered" ? "green" : "red" },]}>Status: {item.status} </Text>
 
-          <Text style={styles.detailText}>Delivery Address: {item.location}</Text>
+          <Text style={styles.detailText}>Delivery Address: {item.deliveryAddress}</Text>
         </View>
       </Card.Content>
       <Card.Actions>
@@ -106,7 +125,7 @@ const OrderHistory = ({ navigation }) => {
           mode="contained"
           onPress={async () => {
             try {
-              const vendorData = await fetchVendor(item?.id); 
+              const vendorData = await fetchVendor(item.vendorContactNo); 
 
               if (vendorData) {
                 navigation.navigate('VegetableListVendor', {
@@ -156,7 +175,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
   },
   itemsContainer: {
-    maxHeight: 200,
+    maxHeight: 150,
     marginBottom: 8,
   },
   sectionTitle: {
@@ -171,8 +190,8 @@ const styles = StyleSheet.create({
   detailsContainer: {
     marginTop: 8,
     paddingVertical: 8,
-    // borderTopWidth: 1,
-    // borderTopColor: '#e0e0e0',
+    borderTopWidth: 1,
+    borderTopColor: '#e0e0e0',
   },
   detailText: {
     fontSize: 16,
