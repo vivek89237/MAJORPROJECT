@@ -10,7 +10,7 @@ import { useNavigation } from '@react-navigation/native';
 
 export default function SelectedScooterSheet() {
     const navigation = useNavigation();
-    const { selectedScooter, isNearby, routeTime, routeDistance , setSelectedScooter, setIsNearby} = useScooter();
+    const { selectedScooter, isNearby, routeTime, routeDistance , setSelectedScooter,  setIsNearby} = useScooter();
 
     const bottomSheetRef = useRef<BottomSheet>(null);
 

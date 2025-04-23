@@ -28,6 +28,7 @@ async function findDistance(vendors, setNewVendors) {
     let dur = newdirection?.routes?.[0]?.duration;
     if (dis <= 20000) {
       updatedVendorCoordinates.push({
+        id: vendor?.id,
         name: vendor.name,
         ContactNo: vendor.ContactNo,
         profilePhoto: vendor.profilePhoto,
@@ -73,6 +74,7 @@ const SearchFeature = () => {
           );
           if (vegetable) {
             return {
+              id: vendor?.id,
               name: vendor.name,
               ContactNo: vendor.ContactNo,
               profilePhoto: vendor.profilePhoto,
@@ -185,7 +187,7 @@ const SearchFeature = () => {
 
             <TouchableOpacity
               style={styles.orderButton}
-              onPress={() => navigation.navigate('VegetableListVendor', { id, ContactNo: item.ContactNo, name: item.name })}
+              onPress={() => navigation.navigate('VegetableListVendor', { id: newVendors?.id, ContactNo: item.ContactNo, name: item.name })}
             >
               <Text style={styles.orderButtonText}>Order Now</Text>
             </TouchableOpacity>

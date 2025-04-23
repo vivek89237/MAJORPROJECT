@@ -8,7 +8,7 @@ const Table = ({data, price}:{data:any, price:number}) => {
     return (
       <View style={styles.row}>
         <Text style={styles.cellN}>{ item?.unit === 'g'? item?.quantity*1000 : item?.quantity}</Text>
-        <Text style={styles.cell}>{item?.unit}</Text>
+        <Text style={styles.cell}>{item?.unit ?? 'kg'}</Text>
         <Text style={styles.cell}>{item?.name}</Text>
         <Text style={styles.cell}>{item?.price}</Text>
         <Text style={styles.cell}>{total.toFixed(2)}</Text>
