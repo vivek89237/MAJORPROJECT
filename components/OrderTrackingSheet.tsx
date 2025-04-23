@@ -12,7 +12,8 @@ export default function OrderTrackingSheet({vendorName, routeTime, routeDistance
 
     useEffect(()=>{
         bottomSheetRef.current?.expand();
-    })
+    },[])
+    //console.log(vendorName)
     // const onDelivered=()={
     //     // change status of order
     // }
@@ -20,7 +21,7 @@ export default function OrderTrackingSheet({vendorName, routeTime, routeDistance
     <View>
      <BottomSheet 
         ref={bottomSheetRef} 
-        index={-1} 
+        //index={-1} 
         snapPoints={[200]}  
         enablePanDownToClose
         backgroundStyle={{backgroundColor:"#414442"}}

@@ -69,11 +69,12 @@ export const getPosts = (ContactNo, setData) =>{
 }
 
 
-export const getVendorCoordinates = (ContactNo, setData) =>{
+export const getVendorCoordinates = (ContactNo, setData, setType) =>{
     let vendorQuery = query(vendorRef, where('ContactNo', '==', ContactNo));
     onSnapshot(vendorQuery, response =>{
             let data = response.docs.map((docs)=>docs.data());
-            setData({coordinates:[ data[0].longitude,data[0].latitude], type: data[0]?.type});
+            setData([ data[0].longitude,data[0].latitude]);
+            setType(data[0]?.type)
     })
 }
 

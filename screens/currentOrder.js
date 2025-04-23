@@ -189,12 +189,12 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   itemsContainer: {
-    maxHeight: 150,
+    
     marginBottom: 8,
     backgroundColor: '#f9f9f9',
     padding: 8,
     borderRadius: 8,
-    ScrollView:false,
+    ScrollView:true,
   },
   sectionTitle: {
     fontSize: 18,

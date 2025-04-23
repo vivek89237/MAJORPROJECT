@@ -40,21 +40,21 @@ const OrderTracking = ({route}: {route:any}) => {
  
   const {vendorContactNo, vendorName, customerCoordinates} = route.params;  
   const [direction, setDirection] = useState({});
-  const [vendorCoordinates, setVendorCoordinates] = useState({});
-
+  const [vendorCoordinates, setVendorCoordinates] = useState([0, 0]);
+  const [type, setType] = useState('HANDCART')
   useEffect(()=>{
-    getVendorCoordinates(vendorContactNo, setVendorCoordinates);
+    getVendorCoordinates(vendorContactNo, setVendorCoordinates, setType);
   }, [])
   useEffect(()=>{
     
     const fetchDircections = async ()=>{
-      const newDirection = await getDirections([customerCoordinates[1], customerCoordinates[0]], vendorCoordinates?.coordinates, vehicleType(vendorCoordinates?.type));
+      const newDirection = await getDirections([customerCoordinates[1], customerCoordinates[0]], vendorCoordinates, vehicleType(type));
       setDirection(newDirection);
     };
   
     fetchDircections();
     
-  },[])
+  },[vendorContactNo, direction])
  
   return (
     <View style={styles.container}>
