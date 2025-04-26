@@ -1,9 +1,9 @@
 {
   "expo": {
-    "name": "Go Cart",
-    "slug": "Go Cart",
+    "name": "GoCart",
+    "slug": "Go-Cart",
     "version": "1.0.0",
-    "scheme": "Go Cart",
+    "scheme": "Go-Cart",
     "web": {
       "bundler": "metro",
       "output": "static",
@@ -33,7 +33,7 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/splash1.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -45,7 +45,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/adaptive-icon1.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.vivek89237.myexpoapp"
