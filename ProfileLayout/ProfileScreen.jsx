@@ -22,7 +22,8 @@ export default function ProfileScreen() {
     try {
       let updateData = {};
       updateData[fieldToUpdate] = newValue;
-
+      console.log("inside update",customerId);
+      
       const { data, error } = await supabase
         .from('User') // Replace 'Customers' with your actual table name
         .update(updateData)
