@@ -10,7 +10,7 @@ const db = getFirestore(app);
 const OrderHistory = ({ navigation }) => {
   const [orders, setOrders] = useState([]);
   const { customerContact } = useCustomer({});
-  //console.log("no ", customerContact);
+  console.log("no ", customerContact);
 
 
   const fetchOrders = async () => {

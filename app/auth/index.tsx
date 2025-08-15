@@ -89,6 +89,9 @@ export default function Auth() {
       return;
     }
 
+
+
+
     const fullPhoneNumber = `+${callingCode}${phoneNumber}`;
 
     try {
@@ -110,6 +113,9 @@ export default function Auth() {
           text1: 'Logged in successfully!',
           visibilityTime: 3000
         });
+
+        console.log("User ID from verifyOtp:", data?.user?.id);
+
         const user = {
           id:  data?.user?.id,
           Name: "Name",
@@ -119,7 +125,7 @@ export default function Auth() {
           latitude:initialCoordinates.latitude,
           longitude:initialCoordinates.longitude,
         }
-       // console.log('User data:', data?.user?.id);
+       //console.log('User data:', data?.user?.id);
          const { error } = await supabase.from('User').upsert(user,{onConflict:'id', ignoreDuplicates:true});
          if (error) {
            console.error('Error inserting customer:', error);
